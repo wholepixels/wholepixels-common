@@ -1,0 +1,8 @@
+snapshot: lts-13.25
+
+packages:
+- .
+extra-deps:
+- cairo-0.13.6.0
+- gtk2hs-buildtools-0.13.5.0
+- hsnoise-0.0.2
