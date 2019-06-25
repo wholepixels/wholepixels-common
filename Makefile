@@ -13,7 +13,7 @@ weeder:
 
 .PHONY: format
 format:
-	ormolu
+	find . -name '*.hs' -exec echo "Formatting '{}'" \; -exec ormolu --mode=inplace '{}' \;
 
 .PHONY: watch
 watch:
