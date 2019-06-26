@@ -1,57 +1,57 @@
 module WholePixels.Target where
 
+import Data.List (isInfixOf)
 import Relude
 import Relude.Extra.Enum
-import Data.List (isInfixOf)
 import WholePixels.Geometry
 
 data Target
-    = Instagram
-    | Wallpaper_540p
-    | Wallpaper_1080p
-    | Wallpaper_4K
-    | Wallpaper_5K
-    | Wallpaper_8K
-    | Wallpaper_iPhone_Xs
-    | Wallpaper_iPhone_Xs_Max
-    | Wallpaper_iPhone_Xr
-    | Wallpaper_iPhone_6_7
-    | Wallpaper_iPhone_6_7_Plus
-    | Wallpaper_iPhone_5
-    | Wallpaper_Galaxy_S10
-    | Wallpaper_Galaxy_S10e
-    | Apparel
-    | WallPortrait
-    | WallLandscape
-    | WallSquare
-    | Duvet
-    | Blanket
-    | Pillow
-    | RugPortrait
-    | RugLandscape
-    | TapestryPortrait
-    | TapestryLandscape
-    | BathMat
-    | ShowerCurtain
-    | BeachTowelPortrait
-    | BeachTowelLandscape
-    | DrawstringBag
-    | ToteBag
-    | WeekenderBag
-    | LaundryBag
-    | ZipPouch
-    | Journal5'7
-    | Spiral6'8
-    | OfficeMug
-    | TravelMug
-    | WaterBottle
-    | PhoneCase
-    | LaptopCover
-    | Banner
-    | NarrowBanner
-    | Sticker
-    | PolkaDotDress
-    deriving (Show, Enum, Bounded)
+  = Instagram
+  | Wallpaper_540p
+  | Wallpaper_1080p
+  | Wallpaper_4K
+  | Wallpaper_5K
+  | Wallpaper_8K
+  | Wallpaper_iPhone_Xs
+  | Wallpaper_iPhone_Xs_Max
+  | Wallpaper_iPhone_Xr
+  | Wallpaper_iPhone_6_7
+  | Wallpaper_iPhone_6_7_Plus
+  | Wallpaper_iPhone_5
+  | Wallpaper_Galaxy_S10
+  | Wallpaper_Galaxy_S10e
+  | Apparel
+  | WallPortrait
+  | WallLandscape
+  | WallSquare
+  | Duvet
+  | Blanket
+  | Pillow
+  | RugPortrait
+  | RugLandscape
+  | TapestryPortrait
+  | TapestryLandscape
+  | BathMat
+  | ShowerCurtain
+  | BeachTowelPortrait
+  | BeachTowelLandscape
+  | DrawstringBag
+  | ToteBag
+  | WeekenderBag
+  | LaundryBag
+  | ZipPouch
+  | Journal5'7
+  | Spiral6'8
+  | OfficeMug
+  | TravelMug
+  | WaterBottle
+  | PhoneCase
+  | LaptopCover
+  | Banner
+  | NarrowBanner
+  | Sticker
+  | PolkaDotDress
+  deriving (Show, Enum, Bounded)
 
 dimensions :: Target -> (Int, Int)
 dimensions Instagram = (1000, 1000)
@@ -116,7 +116,8 @@ gridSpec Wallpaper_iPhone_6_7 = rectangularGridSpec 9 16
 gridSpec Wallpaper_iPhone_6_7_Plus = rectangularGridSpec 9 16
 gridSpec Wallpaper_iPhone_5 = rectangularGridSpec 9 16
 gridSpec LaptopCover = rectangularGridSpec 9 16
-gridSpec PhoneCase = GridSpec
+gridSpec PhoneCase =
+  GridSpec
     [ [N, Y, Y, Y]
     , [N, Y, Y, Y]
     , [Y, Y, Y, Y]
@@ -128,25 +129,24 @@ gridSpec PhoneCase = GridSpec
     ]
 gridSpec PolkaDotDress = rectangularGridSpec 84 96
 gridSpec NarrowBanner = rectangularGridSpec 12 2
-gridSpec _ = rectangularGridSpec 16 16 
+gridSpec _ = rectangularGridSpec 16 16
 
 allTargets :: [Target]
 allTargets =
-    [ Instagram
-    , Wallpaper_4K
-    , Wallpaper_iPhone_6_7_Plus
-    , WallSquare
-    , PhoneCase
-    , LaptopCover
-    , Sticker
-    , OfficeMug
-    , BathMat
-    , NarrowBanner
-    ]
+  [ Instagram
+  , Wallpaper_4K
+  , Wallpaper_iPhone_6_7_Plus
+  , WallSquare
+  , PhoneCase
+  , LaptopCover
+  , Sticker
+  , OfficeMug
+  , BathMat
+  , NarrowBanner
+  ]
 
 isWallpaper :: Target -> Bool
 isWallpaper = ("Wallpaper" `isInfixOf`) . show
 
 wallpaperTargets :: [Target]
 wallpaperTargets = filter isWallpaper universe
-

@@ -1,3 +1,5 @@
+unsafe: False
+debug: False
 ghc-opts:
 - -XLambdaCase
 - -XBlockArguments
