@@ -26,3 +26,8 @@ install-brew-deps:
 	echo "======="
 	echo "If the build process complains about libffi and pkg-config, try"
 	echo "export PKG_CONFIG_PATH=/usr/local/opt/libffi/lib/pkgconfig"
+
+.PHONY: release
+release:
+	stack sdist
+	stack upload .
