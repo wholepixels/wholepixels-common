@@ -2,16 +2,20 @@ module WholePixels.Color where
 
 import Relude
 
-data HSV = HSV
-  { hsvHue        :: Double
-  , hsvSaturation :: Double
-  , hsvValue      :: Double
-  } deriving (Show, Read, Eq, Ord)
+data HSV
+  = HSV
+      { hsvHue :: Double
+      , hsvSaturation :: Double
+      , hsvValue :: Double
+      }
+  deriving (Show, Read, Eq, Ord)
 
-data WithAlpha color = WithAlpha
-  { waColor :: color
-  , waAlpha :: Double
-  } deriving (Show, Read, Eq, Ord)
+data WithAlpha color
+  = WithAlpha
+      { waColor :: color
+      , waAlpha :: Double
+      }
+  deriving (Show, Read, Eq, Ord)
 
 white :: HSV
 white = HSV 0 0 1
@@ -101,29 +105,28 @@ orange :: HSV
 orange = HSV 17 0.89 0.90
 
 fixHue :: Double -> Double
-fixHue h | h >= 0 && h < 360 = h
-fixHue h | h >= 360 = fixHue $ h - 360
-fixHue h = fixHue $ h + 360
+fixHue h = h - 360 * fromIntegral (floor @Double @Int h `div` 360)
 
 complementary :: HSV -> HSV
 complementary (HSV h s v) = HSV (fixHue $ h + 180) s v
 
 splitComplementary :: HSV -> (HSV, HSV)
 splitComplementary (HSV h s v) =
-    (HSV (fixHue $ h + 150) s v, HSV (fixHue $ h + 210) s v)
+  (HSV (fixHue $ h + 150) s v, HSV (fixHue $ h + 210) s v)
 
 splitTriangle :: HSV -> (HSV, HSV)
 splitTriangle (HSV h s v) =
-    (HSV (fixHue $ h + 120) s v, HSV (fixHue $ h + 240) s v)
+  (HSV (fixHue $ h + 120) s v, HSV (fixHue $ h + 240) s v)
 
 analogous :: HSV -> [HSV]
 analogous (HSV h s v) =
-    map
-        (\dh -> HSV (fixHue $ h + dh) s v)
-        [0, 30 .. 360]
+  map
+    (\dh -> HSV (fixHue $ h + dh) s v)
+    [0, 30.. 360]
 
-data Palette = Palette
-    { baseColor :: !HSV
-    , colors :: ![HSV]
-    } deriving (Show, Eq)
-
+data Palette
+  = Palette
+      { baseColor :: !HSV
+      , colors :: ![HSV]
+      }
+  deriving (Show, Eq)

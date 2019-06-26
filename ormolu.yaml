@@ -1,4 +1,4 @@
-unsafe: False
+unsafe: True
 debug: False
 ghc-opts:
 - -XLambdaCase
