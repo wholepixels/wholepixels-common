@@ -120,23 +120,29 @@ genColor Palette {..} expected sigma2 = do
           colorPositions
   weighted $ zip (baseColor : colors) weights
 
-genRectSubdivision :: forall m. MonadRandom m => Int -> Rect -> m [Rect]
-genRectSubdivision depth r = foldr (>=>) pure (replicate depth step) [r]
+genRectSubdivision' :: forall m. MonadRandom m => Int -> Rect -> m [(Int, Rect)]
+genRectSubdivision' max_depth r = foldr (>=>) pure (replicate max_depth step) [(0, r)]
   where
-    step :: [Rect] -> m [Rect]
+    step :: [(Int, Rect)] -> m [(Int, Rect)]
     step rs = concat <$> mapM go rs
-    go :: Rect -> m [Rect]
-    go r' = do
+    go :: (Int, Rect) -> m [(Int, Rect)]
+    go (level, r') = do
       let hbonusWeight = if rh r' > rw r' then 15 else 0
           vbonusWeight = if rw r' > rh r' then 15 else 0
       f <-
         weighted
-          [ (pure . pure, 3)
-          , (pure . hsplit, 1 + hbonusWeight)
-          , (pure . hsplitGolden, 3 + hbonusWeight)
-          , (pure . hsplitReverseGolden, 3 + hbonusWeight)
-          , (pure . vsplit, 1 + vbonusWeight)
-          , (pure . vsplitGolden, 3 + vbonusWeight)
-          , (pure . vsplitReverseGolden, 3 + vbonusWeight)
+          [ (pure, 10)
+          , (hsplit, 1 + hbonusWeight)
+          , (hsplitGolden, 3 + hbonusWeight)
+          , (hsplitReverseGolden, 3 + hbonusWeight)
+          , (vsplit, 1 + vbonusWeight)
+          , (vsplitGolden, 3 + vbonusWeight)
+          , (vsplitReverseGolden, 3 + vbonusWeight)
           ]
-      f r'
+      let rs' = f r'
+          dlevel = case rs' of [_] -> 0
+            _ -> 1
+      pure $ map (level + dlevel,) rs'
+
+genRectSubdivision :: forall m. MonadRandom m => Int -> Rect -> m [Rect]
+genRectSubdivision depth r = map snd <$> genRectSubdivision' depth r
