@@ -140,7 +140,8 @@ genRectSubdivision' max_depth r = foldr (>=>) pure (replicate max_depth step) [(
           , (vsplitReverseGolden, 3 + vbonusWeight)
           ]
       let rs' = f r'
-          dlevel = case rs' of [_] -> 0
+          dlevel = case rs' of
+            [_] -> 0
             _ -> 1
       pure $ map (level + dlevel,) rs'
 
