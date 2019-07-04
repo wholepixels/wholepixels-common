@@ -28,6 +28,7 @@ module WholePixels
   , fillCircle
   , fillOriginCircle
   , fillRect
+  , strokeRect
   , zoomingToRect
   )
 where
@@ -110,16 +111,22 @@ data GenerateCtx
 type Generate a = RandT StdGen (ReaderT GenerateCtx Render) a
 
 instance Monad m => D.MonadRandom (RandT StdGen (ReaderT GenerateCtx m)) where
+
   -- |Generate a uniformly distributed random 'Word8'
   getRandomWord8 = getRandom
+
   -- |Generate a uniformly distributed random 'Word16'
   getRandomWord16 = getRandom
+
   -- |Generate a uniformly distributed random 'Word32'
   getRandomWord32 = getRandom
+
   -- |Generate a uniformly distributed random 'Word64'
   getRandomWord64 = getRandom
+
   -- |Generate a uniformly distributed random 'Double' in the range 0 <= U < 1
   getRandomDouble = getRandom
+
   -- |Generate a uniformly distributed random 'Integer' in the range 0 <= U < 256^n
   getRandomNByteInteger n = getRandomR (0, 256 ^ n)
 
@@ -196,6 +203,15 @@ fillRect Rect {..} = do
   lineTo (rx + rw) (ry + rh)
   lineTo rx (ry + rh)
   fill
+
+strokeRect :: Rect -> Render ()
+strokeRect Rect {..} = do
+  newPath
+  moveTo rx ry
+  lineTo (rx + rw) ry
+  lineTo (rx + rw) (ry + rh)
+  lineTo rx (ry + rh)
+  stroke
 
 zoomingToRect :: Rect -> Render () -> Render ()
 zoomingToRect Rect {..} a = do
