@@ -34,4 +34,4 @@ release:
 
 .PHONY: vim
 vim:
-	echo ":e wholepixels.cabal\n:vsplit\n:e src/WholePixels.hs\n:vsplit\n:term ghcid\n:split\n:term" | nvim -s -
+	echo ":e wholepixels.cabal\n:vsplit\n:e src/WholePixels.hs\n:vsplit\n:Ghcid\n:term" | nvim -s -
