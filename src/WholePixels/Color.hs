@@ -38,6 +38,12 @@ gold = HSV 51 1 0.5
 yellow :: HSV
 yellow = HSV 50 1 1
 
+lightYellow :: HSV
+lightYellow = HSV 50 0.5 1
+
+veryLightYellow :: HSV
+veryLightYellow = HSV 50 0.3 1
+
 brightGreen :: HSV
 brightGreen = HSV 120 1 1
 

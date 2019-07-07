@@ -30,6 +30,7 @@ module WholePixels
   , fillRect
   , strokeRect
   , zoomingToRect
+  , saving
   )
 where
 
@@ -214,8 +215,7 @@ strokeRect Rect {..} = do
   stroke
 
 zoomingToRect :: Rect -> Render () -> Render ()
-zoomingToRect Rect {..} a = do
-  save
+zoomingToRect Rect {..} a = saving $ do
   moveTo rx ry
   lineTo (rx + rw) ry
   lineTo (rx + rw) (ry + rh)
@@ -225,4 +225,6 @@ zoomingToRect Rect {..} a = do
   scale (rw / 2) (rh / 2)
   newPath
   a
-  restore
+
+saving :: Render a -> Render a
+saving a = save *> a <* restore

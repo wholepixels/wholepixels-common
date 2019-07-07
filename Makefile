@@ -31,3 +31,7 @@ install-brew-deps:
 release:
 	stack sdist
 	stack upload .
+
+.PHONY: vim
+vim:
+	echo ":e wholepixels.cabal\n:vsplit\n:e src/WholePixels.hs\n:vsplit\n:term ghcid\n:split\n:term" | nvim -s -
