@@ -165,12 +165,12 @@ fillScreenHSV color = do
 patternAddColorStopHSV :: Pattern -> Double -> HSV -> Render ()
 patternAddColorStopHSV pat offset (HSV h s v) =
   let RGB r g b = hsv h s v
-  in patternAddColorStopRGBA pat offset r g b 1
+   in patternAddColorStopRGBA pat offset r g b 1
 
 patternAddColorStopHSVA :: Pattern -> Double -> WithAlpha HSV -> Render ()
 patternAddColorStopHSVA pat offset (WithAlpha (HSV h s v) a) =
   let RGB r g b = hsv h s v
-  in patternAddColorStopRGBA pat offset r g b a
+   in patternAddColorStopRGBA pat offset r g b a
 
 rotateToDir :: Direction -> Render ()
 rotateToDir R = pure ()
@@ -215,16 +215,17 @@ strokeRect Rect {..} = do
   stroke
 
 zoomingToRect :: Rect -> Render () -> Render ()
-zoomingToRect Rect {..} a = saving $ do
-  moveTo rx ry
-  lineTo (rx + rw) ry
-  lineTo (rx + rw) (ry + rh)
-  lineTo rx (ry + rh)
-  clip
-  translate (rx + rw / 2) (ry + rh / 2)
-  scale (rw / 2) (rh / 2)
-  newPath
-  a
+zoomingToRect Rect {..} a =
+  saving $ do
+    moveTo rx ry
+    lineTo (rx + rw) ry
+    lineTo (rx + rw) (ry + rh)
+    lineTo rx (ry + rh)
+    clip
+    translate (rx + rw / 2) (ry + rh / 2)
+    scale (rw / 2) (rh / 2)
+    newPath
+    a
 
 saving :: Render a -> Render a
 saving a = save *> a <* restore

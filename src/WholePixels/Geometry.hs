@@ -103,4 +103,4 @@ calculateCellSize (w, h) (GridSpec gs) =
         (row : _) -> length row
         _ -> 0
       rowCount = length gs
-  in min (w / fromIntegral colCount) (h / fromIntegral rowCount)
+   in min (w / fromIntegral colCount) (h / fromIntegral rowCount)

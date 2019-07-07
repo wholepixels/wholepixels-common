@@ -87,10 +87,10 @@ genPaletteWithStrategy strategy = do
         Complementary -> take 3 (analogous c) <> [complementary c]
         SplitComplementary ->
           let (c1, c2) = splitComplementary c
-          in [c, c1, c2]
+           in [c, c1, c2]
         Triangle ->
           let (c1, c2) = splitTriangle c
-          in [c, c1, c2]
+           in [c, c1, c2]
   pure $ Palette {..}
 
 genMonochromePaletteForColor :: MonadRandom m => HSV -> m Palette

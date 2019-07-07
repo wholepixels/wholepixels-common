@@ -13,7 +13,7 @@ weeder:
 
 .PHONY: format
 format:
-	find src -name '*.hs' -exec echo "Formatting '{}'" \; -exec ormolu --config=ormolu.yaml --mode=inplace '{}' \;
+	find src -name '*.hs' -exec echo "Formatting '{}'" \; -exec ormolu --mode=inplace '{}' \;
 
 .PHONY: watch
 watch:
