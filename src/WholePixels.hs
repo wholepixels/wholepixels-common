@@ -71,13 +71,14 @@ mainWithPainting Painting {..} target = do
       FixedSeed s -> pure s
   print ("Seed", seed)
   let stdGen = mkStdGen seed
-      (w, h) = dimensions target
+      (w, h, density) = dimensions target
   createDirectoryIfMissing False $ "./images/"
   createDirectoryIfMissing False $ "./images/" <> paintingName
   createDirectoryIfMissing False $ "./images/" <> paintingName <> "/progress"
-  let ctx = GenerateCtx w h (gridSpec target)
+  let ctx = GenerateCtx (fromIntegral w / density) (fromIntegral h / density) (gridSpec target)
   surface <- createImageSurface FormatARGB32 w h
   void . renderWith surface . flip runReaderT ctx . flip runRandT stdGen $ do
+    cairo $ scale density density
     paintingGenerate
   putStrLn "Generating art..."
   let filename =
@@ -104,8 +105,8 @@ mainWithPainting Painting {..} target = do
 
 data GenerateCtx
   = GenerateCtx
-      { gcWidth :: Int
-      , gcHeight :: Int
+      { gcWidth :: Double
+      , gcHeight :: Double
       , gcGridSpec :: GridSpec
       }
 
@@ -131,10 +132,9 @@ instance Monad m => D.MonadRandom (RandT StdGen (ReaderT GenerateCtx m)) where
   -- |Generate a uniformly distributed random 'Integer' in the range 0 <= U < 256^n
   getRandomNByteInteger n = getRandomR (0, 256 ^ n)
 
-getSize :: Num a => Generate (a, a)
+getSize :: Generate (Double, Double)
 getSize = do
-  (w, h) <- asks (\ctx -> (gcWidth ctx, gcHeight ctx))
-  pure (fromIntegral w, fromIntegral h)
+  asks (\ctx -> (gcWidth ctx, gcHeight ctx))
 
 getGridSpec :: Generate GridSpec
 getGridSpec = asks gcGridSpec
