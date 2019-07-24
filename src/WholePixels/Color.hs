@@ -128,7 +128,7 @@ analogous :: HSV -> [HSV]
 analogous (HSV h s v) =
   map
     (\dh -> HSV (fixHue $ h + dh) s v)
-    [0, 30.. 360]
+    [0, 30 .. 360]
 
 data Palette
   = Palette

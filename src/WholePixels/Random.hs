@@ -8,7 +8,7 @@ import WholePixels.Geometry
 
 disturbedSequence :: MonadRandom m => [Double] -> Double -> m [Double]
 disturbedSequence xs amp = do
-  dxs <- replicateM (length xs) $ getRandomR (-amp, amp)
+  dxs <- replicateM (length xs) $ getRandomR (- amp, amp)
   pure $ zipWith (+) xs dxs
 
 filterRandomly :: MonadRandom m => Double -> [a] -> m [a]
@@ -25,7 +25,7 @@ genGrid colCount rowCount genElement =
 
 genGridWithBoundaries :: MonadRandom m => Int -> Int -> ([Direction] -> m a) -> m [(Int, Int, a)]
 genGridWithBoundaries colCount rowCount genElement = do
-  let numberGrid = [(x, y) | y <- [0.. rowCount - 1], x <- [0.. colCount - 1]]
+  let numberGrid = [(x, y) | y <- [0 .. rowCount - 1], x <- [0 .. colCount - 1]]
   forM numberGrid $ \(x, y) -> do
     let dirs = [R | x == 0] <> [D | y == 0] <> [L | x == colCount - 1] <> [U | y == rowCount - 1]
     (x,y,) <$> genElement dirs
@@ -41,9 +41,9 @@ genGrid' (GridSpec gridSpec) genElement = do
         concat $
           zipWith
             (\j row -> map (\(i, c) -> (i, j, c)) row)
-            [0.. rowCount]
+            [0 .. rowCount]
             ( map
-              (zip [0.. colCount])
+              (zip [0 .. colCount])
               gridSpec
             )
   fmap catMaybes . forM numberedGrid $ \(x, y, c) -> do
@@ -95,7 +95,7 @@ genPaletteWithStrategy strategy = do
 
 genMonochromePaletteForColor :: MonadRandom m => HSV -> m Palette
 genMonochromePaletteForColor baseColor@(HSV bh bs bv) = do
-  let colors = [HSV bh bs v | v <- [bv + 0.15, bv + 0.2.. 1]]
+  let colors = [HSV bh bs v | v <- [bv + 0.15, bv + 0.2 .. 1]]
   pure $ Palette {..}
 
 genMonochromePalette :: MonadRandom m => Double -> m Palette
@@ -104,7 +104,7 @@ genMonochromePalette maxSaturation = do
   saturation <- getRandomR (0.0, maxSaturation)
   baseValue <- getRandomR (0, 0.5)
   let baseColor = HSV hue saturation baseValue
-      colors = [HSV hue saturation v | v <- [baseValue + 0.15, baseValue + 0.2.. 1]]
+      colors = [HSV hue saturation v | v <- [baseValue + 0.15, baseValue + 0.2 .. 1]]
   pure $ Palette {..}
 
 genColor' :: MonadRandom m => Palette -> m HSV
@@ -113,10 +113,10 @@ genColor' pal = genColor pal 0.5 1.0
 genColor :: MonadRandom m => Palette -> Double -> Double -> m HSV
 genColor Palette {..} expected sigma2 = do
   let colorCount = length (baseColor : take 10 colors)
-      colorPositions = take colorCount [0.0, (1.0 / fromIntegral colorCount)..]
+      colorPositions = take colorCount [0.0, (1.0 / fromIntegral colorCount) ..]
       weights =
         map
-          (\p -> toRational $ 1000.0 * exp (-(p - expected) * (p - expected) / sigma2))
+          (\p -> toRational $ 1000.0 * exp (- (p - expected) * (p - expected) / sigma2))
           colorPositions
   weighted $ zip (baseColor : colors) weights
 

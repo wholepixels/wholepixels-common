@@ -22,7 +22,7 @@ divf :: Double -> Int -> Double
 divf x y = x / fromIntegral y
 
 angularNeighborhood :: Double -> Double -> Double -> Double
-angularNeighborhood center size a = exp (-((a - center) / size) ^ (2 :: Int))
+angularNeighborhood center size a = exp (- ((a - center) / size) ^ (2 :: Int))
 
 lerp :: Double -> Double -> Double -> Double
 lerp a x0 x1 = a * x1 + (1 - a) * x0
